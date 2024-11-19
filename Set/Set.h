@@ -17,6 +17,8 @@ class Set
 
 		Node(int val, Node* left, Node* right);
 		//~Node(); ???
+
+
 	};
 
 #pragma endregion
@@ -24,7 +26,15 @@ class Set
 	size_t _size = 0;
 	Node* _root = nullptr;
 
+	Node*& find(Node*& node, int& val);
+
 public:
+
+
 	size_t size();
 	bool empty();
+
+
+	void insert(int val);
+	bool contains(int val);
 };
