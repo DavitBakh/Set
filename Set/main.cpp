@@ -1,5 +1,5 @@
 #include <iostream>
-//#include "Tests/1BasicConstructorsTest.h"
+#include "Tests/1BasicConstructorsTest.h"
 //#include "Tests/2InsertContainsTest.h"
 //#include "Tests/3EraseValueTest.h"
 //#include "Tests/4InitializerListTest.h"
