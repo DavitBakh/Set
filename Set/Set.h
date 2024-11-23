@@ -14,10 +14,10 @@ class Set
 		int _val;
 		Node* _left;
 		Node* _right;
+		Node* _parent;
 
-		Node(int val, Node* left, Node* right);
+		Node(int val, Node* parent, Node* left, Node* right);
 		//~Node(); ???
-
 
 	};
 
@@ -27,6 +27,10 @@ class Set
 	Node* _root = nullptr;
 
 	Node*& find(Node*& node, int& val);
+	Node*& find(Node*& node, int& val, Node*& outParent);
+	void remove_leaf(Node* node);
+	void remove_1_child_node(Node* node);
+	void remove_2_child_node(Node* node);
 
 public:
 
@@ -37,4 +41,5 @@ public:
 
 	void insert(int val);
 	bool contains(int val);
+	void erase(int val);
 };
