@@ -1,4 +1,5 @@
 #include <cassert>
+#include <queue>
 #include "Set.h"
 
 Set::Set() : _size(0), _root(nullptr) { }
@@ -7,6 +8,27 @@ Set::Set(std::initializer_list<int> initList) : _size(0), _root(nullptr)
 {
 	for (auto& i : initList)
 		insert(i);
+}
+
+Set::Set(const Set& source)
+{
+	std::queue<Node*> queue;
+	queue.push(source._root);
+
+	Node* curr;
+	while (!queue.empty())
+	{
+		curr = queue.front();
+		queue.pop();
+
+		if (curr == nullptr)
+			continue;
+
+		queue.push(curr->_left);
+		queue.push(curr->_right);
+
+		insert(curr->_val);
+	}
 }
 
 Set::Node::Node(int val = 0, Node* parent = nullptr, Node* left = nullptr, Node* right = nullptr) : _val(val), _parent(parent), _left(left), _right(right) {}

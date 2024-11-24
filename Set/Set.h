@@ -32,6 +32,7 @@ class Set
 public:
 
 	Set();
+	Set(const Set& source);
 	Set(std::initializer_list<int> initList);
 
 	size_t size();
