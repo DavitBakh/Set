@@ -1,9 +1,6 @@
 #pragma once
 
-/*
-  Your task here is to define a set of integers. Since this is not a template class
-  you must declare your functions in the header file and define them in .cpp file.
-*/
+#include <initializer_list>
 
 class Set
 {
@@ -23,8 +20,8 @@ class Set
 
 #pragma endregion
 
-	size_t _size = 0;
-	Node* _root = nullptr;
+	size_t _size;
+	Node* _root;
 
 	Node*& find(Node*& node, int& val);
 	Node*& find(Node*& node, int& val, Node*& outParent);
@@ -34,6 +31,8 @@ class Set
 
 public:
 
+	Set();
+	Set(std::initializer_list<int> initList);
 
 	size_t size();
 	bool empty();
