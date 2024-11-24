@@ -63,8 +63,6 @@ public:
 		friend class Set;
 	};
 
-	//static_assert(std::bidirectional_iterator<iterator>);
-
 #pragma endregion
 
 	Set();
