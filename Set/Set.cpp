@@ -297,6 +297,11 @@ Set::Node* Set::inorder_prev(Node* node)
 
 #pragma region Iterator
 
+Set::iterator Set::find(int val)
+{
+	return iterator(find(_root, val));
+}
+
 Set::iterator::iterator(Node* ptr) : _current(ptr) { }
 
 Set::iterator Set::begin()
