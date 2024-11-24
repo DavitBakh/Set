@@ -144,7 +144,48 @@ bool operator!=(const Set& lhs, const Set& rhs)
 	return !(lhs == rhs);
 }
 
+Set::iterator Set::find(int val)
+{
+	return iterator(find(_root, val));
+}
 
+Set::iterator Set::upper_bound(int val)
+{
+	Node* curr = _root;
+	Node* upper = nullptr;
+
+	while (curr != nullptr)
+	{
+		if (curr->_val <= val)
+			curr = curr->_right;
+		else
+		{
+			upper = curr;
+			curr = curr->_left;
+		}
+	}
+
+	return iterator(upper);
+}
+
+Set::iterator Set::lower_bound(int val)
+{
+	Node* curr = _root;
+	Node* lower = nullptr;
+
+	while (curr != nullptr)
+	{
+		if (curr->_val < val)
+			curr = curr->_right;
+		else
+		{
+			lower = curr;
+			curr = curr->_left;
+		}
+	}
+
+	return iterator(lower);
+}
 
 #pragma region Private Functions
 
@@ -297,10 +338,6 @@ Set::Node* Set::inorder_prev(Node* node)
 
 #pragma region Iterator
 
-Set::iterator Set::find(int val)
-{
-	return iterator(find(_root, val));
-}
 
 Set::iterator::iterator(Node* ptr) : _current(ptr) { }
 

@@ -80,6 +80,8 @@ public:
 	iterator find(int val);
 	iterator begin();
 	iterator end();
+	iterator lower_bound(int val);
+	iterator upper_bound(int val);
 
 	Set& operator=(const Set& source);
 	friend bool operator==(const Set& lhs, const Set& rhs);
