@@ -91,6 +91,23 @@ void Set::erase(int val)
 	--_size;
 }
 
+void Set::erase(iterator it)
+{
+	Node* node = it._current;
+
+	if (node == nullptr)
+		return;
+
+	if (node->_left == nullptr && node->_right == nullptr)
+		remove_leaf(node);
+	else if (node->_left == nullptr || node->_right == nullptr)
+		remove_1_child_node(node);
+	else
+		remove_2_child_node(node);
+
+	--_size;
+}
+
 Set& Set::operator=(const Set& source)
 {
 	if (&source != this)
@@ -191,6 +208,9 @@ Set::iterator Set::lower_bound(int val)
 
 Set::Node* Set::min() const
 {
+	if (_root == nullptr)
+		return nullptr;
+
 	Set::Node* curr = _root;
 
 	while (curr->_left != nullptr)
@@ -233,6 +253,8 @@ void Set::remove_leaf(Node* node)
 		else
 			node->_parent->_right = nullptr;
 	}
+	else
+		_root = nullptr;
 
 	delete node;
 }
@@ -251,6 +273,8 @@ void Set::remove_1_child_node(Node* node)
 		else
 			node->_parent->_right = c;
 	}
+	else
+		_root = c;
 
 	if (has_right)
 		node->_right = nullptr;

@@ -76,6 +76,7 @@ public:
 	void insert(int val);
 	bool contains(int val);
 	void erase(int val);
+	void erase(iterator it);
 
 	iterator find(int val);
 	iterator begin();

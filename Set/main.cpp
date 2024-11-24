@@ -9,7 +9,7 @@
 #include "Tests/8IteratorStlCompatibilityTest.h"
 #include "Tests/9FindTest.h"
 #include "Tests/10UpperAndLowerBoundsTest.h"
-//#include "Tests/11EraseIteratorTest.h"
+#include "Tests/11EraseIteratorTest.h"
 // #include "Tests/12TimeLimitTest.h" <- include this only if your tree is balanced
 
 int main()
