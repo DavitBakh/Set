@@ -14,7 +14,7 @@ class Set
 		Node* _parent;
 
 		Node(int val, Node* parent, Node* left, Node* right);
-		//~Node(); ???
+		~Node();
 
 	};
 
@@ -28,12 +28,15 @@ class Set
 	void remove_leaf(Node* node);
 	void remove_1_child_node(Node* node);
 	void remove_2_child_node(Node* node);
+	static Node* inorder_next(Node* node);
+	static Node* inorder_prev(Node* node);
 
 public:
 
 	Set();
 	Set(const Set& source);
 	Set(std::initializer_list<int> initList);
+	~Set();
 
 	size_t size();
 	bool empty();
@@ -42,4 +45,8 @@ public:
 	void insert(int val);
 	bool contains(int val);
 	void erase(int val);
+
+	Set& operator=(const Set& source);
+	friend bool operator==(const Set& lhs, const Set& rhs);
+
 };

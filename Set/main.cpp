@@ -4,7 +4,7 @@
 #include "Tests/3EraseValueTest.h"
 #include "Tests/4InitializerListTest.h"
 #include "Tests/5CopyConstructorTest.h"
-//#include "Tests/6AssignmentOperatorTest.h"
+#include "Tests/6AssignmentOperatorTest.h"
 //#include "Tests/7IteratorTest.h"
 //#include "Tests/8IteratorStlCompatibilityTest.h"
 //#include "Tests/9FindTest.h"
