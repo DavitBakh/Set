@@ -124,14 +124,8 @@ bool operator==(const Set& lhs, const Set& rhs)
 	if (lhs._size != rhs._size)
 		return false;
 
-	Set::Node* curr1 = lhs._root;
-	Set::Node* curr2 = rhs._root;
-
-	while (curr1->_left != nullptr)
-		curr1 = curr1->_left;
-
-	while (curr2->_left != nullptr)
-		curr2 = curr2->_left;
+	Set::Node* curr1 = lhs.min();
+	Set::Node* curr2 = rhs.min();
 
 	while (curr1 != nullptr)
 	{
@@ -152,7 +146,17 @@ bool operator!=(const Set& lhs, const Set& rhs)
 
 
 
-#pragma region Privat Functions
+#pragma region Private Functions
+
+Set::Node* Set::min() const
+{
+	Set::Node* curr = _root;
+
+	while (curr->_left != nullptr)
+		curr = curr->_left;
+
+	return curr;
+}
 
 Set::Node*& Set::find(Node*& node, int& val)
 {
@@ -286,6 +290,73 @@ Set::Node* Set::inorder_prev(Node* node)
 		return node->_parent;
 	}
 	return nullptr;
+}
+
+#pragma endregion
+
+
+#pragma region Iterator
+
+Set::iterator::iterator(Node* ptr) : _current(ptr) { }
+
+Set::iterator Set::begin()
+{
+	return iterator(min());
+}
+
+Set::iterator Set::end()
+{
+	return iterator(nullptr);
+}
+
+Set::iterator::reference Set::iterator::operator*() const
+{
+	return _current->_val;
+}
+
+Set::iterator& Set::iterator::operator++()
+{
+	_current = inorder_next(_current);
+	return *this;
+}
+
+Set::iterator Set::iterator::operator++(int)
+{
+	iterator result(*this);
+	++(*this);
+	return result;
+}
+
+Set::iterator& Set::iterator::operator--()
+{
+	_current = inorder_prev(_current);
+	return *this;
+}
+
+Set::iterator Set::iterator::operator--(int)
+{
+	iterator result(*this);
+	--(*this);
+	return result;
+}
+
+
+bool Set::iterator::operator==(const Set::iterator& other) const
+{
+	return this->_current == other._current;
+}
+
+
+bool Set::iterator::operator!=(const Set::iterator& other) const
+{
+	return this->_current != other._current;
+}
+
+
+Set::iterator& Set::iterator::operator=(const iterator& source)
+{
+	this->_current = source._current;
+	return *this;
 }
 
 #pragma endregion

@@ -20,9 +20,11 @@ class Set
 
 #pragma endregion
 
+
 	size_t _size;
 	Node* _root;
 
+	Node* min() const;
 	Node*& find(Node*& node, int& val);
 	Node*& find(Node*& node, int& val, Node*& outParent);
 	void remove_leaf(Node* node);
@@ -33,6 +35,38 @@ class Set
 
 public:
 
+#pragma region Iterator
+
+	class iterator
+	{
+	private:
+		Node* _current;
+
+	public:
+		using value_type = int;
+		using difference_type = std::ptrdiff_t;
+		using pointer = int*;
+		using reference = const int&;
+		using iterator_category = std::bidirectional_iterator_tag;
+
+		iterator(Node* ptr = nullptr);
+
+		iterator& operator=(const iterator& source);
+		reference operator*() const;
+		iterator& operator++();
+		iterator operator++(int);
+		iterator& operator--();
+		iterator operator--(int);
+		bool operator==(const iterator& other) const;
+		bool operator!=(const iterator& other) const;
+
+		friend class Set;
+	};
+
+	//static_assert(std::bidirectional_iterator<iterator>);
+
+#pragma endregion
+
 	Set();
 	Set(const Set& source);
 	Set(std::initializer_list<int> initList);
@@ -41,10 +75,12 @@ public:
 	size_t size();
 	bool empty();
 
-
 	void insert(int val);
 	bool contains(int val);
 	void erase(int val);
+
+	iterator begin();
+	iterator end();
 
 	Set& operator=(const Set& source);
 	friend bool operator==(const Set& lhs, const Set& rhs);
