@@ -32,7 +32,7 @@ Set::Set(const Set& source) : Set::Set()
 	}
 }
 
-Set::Node::Node(int val = 0, Node* parent = nullptr, Node* left = nullptr, Node* right = nullptr) : _val(val), _parent(parent), _left(left), _right(right) {}
+Set::Node::Node(int val = 0, Node* parent = nullptr, Node* left = nullptr, Node* right = nullptr) : _val(val), _parent(parent), _left(left), _right(right), _height(1) {}
 
 Set::Node::~Node()
 {
@@ -56,16 +56,10 @@ bool Set::empty()
 	return _size == 0;
 }
 
-
 void Set::insert(int val)
 {
 	Node* parent = nullptr;
-	Node*& res = find(_root, val, parent);
-	if (res == nullptr)
-	{
-		res = new Node(val, parent);
-		++_size;
-	}
+	insert(_root, val, parent);
 }
 
 bool Set::contains(int val)
@@ -242,6 +236,7 @@ Set::Node*& Set::find(Node*& node, int& val, Node*& outParent)
 	return find(node->_right, val, outParent);
 }
 
+
 void Set::remove_leaf(Node* node)
 {
 	assert(node->_left == nullptr && node->_right == nullptr);
@@ -357,13 +352,140 @@ Set::Node* Set::inorder_prev(Node* node)
 	return nullptr;
 }
 
+void Set::insert(Node*& node, int& val, Node*& parent)
+{
+	if (node == nullptr)
+	{
+		node = new Node(val, parent);
+		++_size;
+		return;
+	}
+
+	if (node->_val == val)
+		return;
+	else if (val < node->_val)
+		insert(node->_left, val, node);
+	else
+		insert(node->_right, val, node);
+
+
+	int leftH = node->_left ? node->_left->_height : 0;
+	int rightH = node->_right ? node->_right->_height : 0;
+
+	if (std::abs(leftH - rightH) > 1)
+	{
+		bool isLeftChild = leftH > rightH;
+		Node* child = isLeftChild ? node->_left : node->_right;
+
+		int ChleftH = child->_left ? child->_left->_height : 0;
+		int ChrightH = child->_right ? child->_right->_height : 0;
+
+		bool isLeftGrChild = ChleftH > ChrightH;
+		Node* grChild = isLeftGrChild ? child->_left : child->_right;
+
+		if (isLeftChild && isLeftGrChild)
+		{
+			rightRotation(child);
+			if (node == _root)
+				_root = child;
+		}
+
+		if (isLeftChild && !isLeftGrChild)
+		{
+			leftRotation(grChild);
+			rightRotation(grChild);
+
+			if (node == _root)
+				_root = grChild;
+		}
+
+
+		if (!isLeftChild && isLeftGrChild)
+		{
+			rightRotation(grChild);
+			leftRotation(grChild);
+
+			if (node == _root)
+				_root = grChild;
+		}
+
+
+		if (!isLeftChild && !isLeftGrChild)
+		{
+			leftRotation(child);
+			if (node == _root)
+				_root = child;
+		}
+
+	}
+
+	node->_height = std::max(node->_left ? node->_left->_height : 0, node->_right ? node->_right->_height : 0) + 1;
+}
+
+void Set::leftRotation(Node* node)
+{
+	Node* p = node->_parent;
+	if (p == nullptr)
+		return;
+
+	if (node != p->_right)
+		return;
+
+	Node* left = node->_left;
+	Node* pp = p->_parent;
+
+	node->_left = p;
+	p->_parent = node;
+
+	p->_right = left;
+
+	if (left)
+		left->_parent = p;
+
+	node->_parent = pp;
+	if (pp) {
+		if (pp->_left == p)
+			pp->_left = node;
+		else
+			pp->_right = node;
+	}
+}
+
+void Set::rightRotation(Node* node)
+{
+	Node* p = node->_parent;
+	if (p == nullptr)
+		return;
+
+	if (node != p->_left)
+		return;
+
+	Node* right = node->_right;
+	Node* pp = p->_parent;
+
+	node->_right = p;
+	p->_parent = node;
+
+	p->_left = right;
+
+	if (right)
+		right->_parent = p;
+
+	node->_parent = pp;
+	if (pp) {
+		if (pp->_right == p)
+			pp->_right = node;
+		else
+			pp->_left = node;
+	}
+}
 #pragma endregion
 
 
 #pragma region Iterator
 
 
-Set::iterator::iterator(Node* ptr) : _current(ptr) { }
+Set::iterator::iterator(Node* ptr) : _current(ptr) {}
 
 Set::iterator Set::begin()
 {

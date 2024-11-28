@@ -9,6 +9,7 @@ class Set
 	struct Node
 	{
 		int _val;
+		int _height;
 		Node* _left;
 		Node* _right;
 		Node* _parent;
@@ -27,11 +28,14 @@ class Set
 	Node* min() const;
 	Node*& find(Node*& node, int& val);
 	Node*& find(Node*& node, int& val, Node*& outParent);
+	void insert(Node*& node, int& val, Node*& parent);
 	void remove_leaf(Node* node);
 	void remove_1_child_node(Node* node);
 	void remove_2_child_node(Node* node);
 	static Node* inorder_next(Node* node);
 	static Node* inorder_prev(Node* node);
+	void leftRotation(Node* node);
+	void rightRotation(Node* node);
 
 public:
 
